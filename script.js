@@ -2,40 +2,71 @@ const display = document.querySelector('.display');
 const digitBtns = document.querySelectorAll('.digit');
 const operatorBtns = document.querySelectorAll('.operator');
 const clearBtn =  document.querySelector('.clear');
-const dotBtn = document.querySelector('.dot');
 const equalsBtn = document.querySelector('.equals');
 
-let number1 = 0;
-let number2 = 0;
-let operatorSign = '';
+let firstNumber = null;
+let secondNumber = null;
+let operatorSign = null;
+let currentDisplay = firstNumber + operatorSign + secondNumber; 
 
-function operator(operator, num1, num2) {
-    if(operator === '+') return add(num1, num2);
-    if(operator === '-') return subtract(num1, num2);
-    if(operator === '*') return multiply(num1, num2);
-    if(operator === '/') return divide(num1, num2);
-    if(operator === '%') return remainder(num1, num2);
+function operator(num1, operator, num2) {
+    if(operator === '+')  {
+        return num1 + num2;
+    }
+    if(operator === '-') {
+        return num1 - num2;
+    } 
+    if(operator === '*')  {
+        return num1 * num2;
+    }
+    if(operator === '÷')  {
+        return num1 / num2;
+    }
+    if(operator === '%')  {
+        return num1 % num2;
+    }
 }
 
-function add(a, b) {
-    return a + b;
+function displayInput(value) {
+    if(display.textContent === '0') {
+        display.textContent = value;
+    } else {
+        display.textContent += value;
+    }
 }
 
-function subtract(a, b) {
-    return a - b;
-}
+digitBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+        displayInput(btn.value);  
+        if(!operatorSign) {
+            firstNumber = display.textContent;
+            currentDisplay = firstNumber;   
+        } else {
+            secondNumber = btn.value;
+            console.log(secondNumber);
+            currentDisplay = firstNumber + operatorSign + secondNumber;
+        }
+        
+    })
+})
 
-function multiply(a, b) {
-    return a * b;
-}
+operatorBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+        displayInput(btn.value);
+        operatorSign = btn.value;
+        currentDisplay = firstNumber + operatorSign;
+        display.textContent = currentDisplay;
+    })
+})
 
-function divide(a, b) {
-    return a / b;
-}
+equalsBtn.addEventListener('click', () => {
+    const result = operator(Number(firstNumber), operatorSign, Number(secondNumber));
+    display.textContent = result;
+    firstNumber = result;
+    operatorSign = null;
+    secondNumber = null;
+})
 
-function remainder(a, b) {
-    return a % b;
-}
-
-
-
+clearBtn.addEventListener('click', () => {
+    display.textContent = '';
+})
