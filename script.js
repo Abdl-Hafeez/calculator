@@ -2,6 +2,7 @@ const display = document.querySelector('.display');
 const digitBtns = document.querySelectorAll('.digit');
 const operatorBtns = document.querySelectorAll('.operator');
 const clearBtn =  document.querySelector('.clear');
+const backspaceBtn = document.querySelector('.backspace');
 const equalsBtn = document.querySelector('.equals');
 
 let firstNumber = null;
@@ -83,4 +84,18 @@ clearBtn.addEventListener('click', () => {
     secondNumber = null;
     operatorSign = null;
     currentDisplay = '';
+})
+
+backspaceBtn.addEventListener('click', ()  => {
+    if(currentDisplay.length > 0) {
+        const newDisplay = currentDisplay.slice(0, -1);
+        display.textContent = newDisplay;
+        currentDisplay = newDisplay;
+        if(secondNumber && currentDisplay.includes(operatorSign)) {
+            secondNumber = secondNumber.slice(0, -1);
+        } else  {
+            firstNumber = firstNumber.slice(0, -1);
+        }
+    }
+    
 })
