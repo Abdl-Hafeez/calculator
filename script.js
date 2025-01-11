@@ -67,10 +67,8 @@ equalsBtn.addEventListener('click', () => {
     if(firstNumber && operatorSign && secondNumber) {
         if (result.toString().includes('.') && result.toString().length > 10) {
             roundedResult = Number(result.toFixed(10));
-            console.log(roundedResult);
         } else {
             roundedResult = result; 
-            console.log(roundedResult);
         }
         display.textContent = roundedResult;
         firstNumber = roundedResult;
