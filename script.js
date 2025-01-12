@@ -4,6 +4,7 @@ const operatorBtns = document.querySelectorAll('.operator');
 const clearBtn =  document.querySelector('.clear');
 const backspaceBtn = document.querySelector('.backspace');
 const equalsBtn = document.querySelector('.equals');
+const dotBtn = document.querySelector('.dot');
 
 let firstNumber = null;
 let secondNumber = null;
@@ -38,15 +39,25 @@ function displayInput(value) {
 
 digitBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-        displayInput(btn.value);  
+        displayInput(btn.value); 
         if(!operatorSign) {
             firstNumber = display.textContent;
             currentDisplay = firstNumber;   
         } else {
             secondNumber = secondNumber ? secondNumber + btn.value : btn.value;
             currentDisplay = firstNumber + operatorSign + secondNumber;
+        }   
+        if(firstNumber.includes('.') && !operatorSign) {
+            dotBtn.disabled = true;
         }
-        
+        else if(operatorSign && !secondNumber) {
+            dotBtn.disabled = true;
+        }
+        else if(operatorSign && secondNumber.includes('.')) {
+            dotBtn.disabled = true;
+        } else {
+            dotBtn.disabled = false;
+        } 
     })
 })
 
