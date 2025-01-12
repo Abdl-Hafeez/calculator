@@ -45,6 +45,11 @@
     background-color: darkred;
 }
 
+.buttons .backspace {
+    background-color: #cfd8e0;
+    color: darkred;
+}
+
 .buttons .digit {
     background-color: darkolivegreen;
 }
