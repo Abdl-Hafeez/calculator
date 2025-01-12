@@ -47,15 +47,10 @@ digitBtns.forEach((btn) => {
             secondNumber = secondNumber ? secondNumber + btn.value : btn.value;
             currentDisplay = firstNumber + operatorSign + secondNumber;
         }   
-        if(firstNumber.includes('.') && !operatorSign) {
+        
+        if(firstNumber.includes('.') && !operatorSign || operatorSign && !secondNumber || operatorSign && secondNumber.includes('.')) {
             dotBtn.disabled = true;
-        }
-        else if(operatorSign && !secondNumber) {
-            dotBtn.disabled = true;
-        }
-        else if(operatorSign && secondNumber.includes('.')) {
-            dotBtn.disabled = true;
-        } else {
+        }else {
             dotBtn.disabled = false;
         } 
     })
