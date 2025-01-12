@@ -47,7 +47,7 @@ digitBtns.forEach((btn) => {
             secondNumber = secondNumber ? secondNumber + btn.value : btn.value;
             currentDisplay = firstNumber + operatorSign + secondNumber;
         }   
-        
+
         if(firstNumber.includes('.') && !operatorSign || operatorSign && !secondNumber || operatorSign && secondNumber.includes('.')) {
             dotBtn.disabled = true;
         }else {
@@ -78,9 +78,11 @@ equalsBtn.addEventListener('click', () => {
             roundedResult = result; 
         }
         display.textContent = roundedResult;
-        firstNumber = roundedResult;
+        firstNumber = roundedResult.toString();
         operatorSign = null;
         secondNumber = null;
+        currentDisplay = firstNumber;
+        dotBtn.disabled = false;
     }
 })
 
