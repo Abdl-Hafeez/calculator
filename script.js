@@ -37,38 +37,33 @@ function displayInput(value) {
     }
 }
 
-digitBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-        displayInput(btn.value); 
-        if(!operatorSign) {
-            firstNumber = display.textContent;
-            currentDisplay = firstNumber;   
-        } else {
-            secondNumber = secondNumber ? secondNumber + btn.value : btn.value;
-            currentDisplay = firstNumber + operatorSign + secondNumber;
-        }   
+function dislplayDigits(value) {
+    displayInput(value); 
+    if(!operatorSign) {
+        firstNumber = display.textContent;
+        currentDisplay = firstNumber;   
+    } else {
+        secondNumber = secondNumber ? secondNumber + value : value;
+        currentDisplay = firstNumber + operatorSign + secondNumber;
+    }   
 
-        if(firstNumber.includes('.') && !operatorSign || operatorSign && !secondNumber || operatorSign && secondNumber.includes('.')) {
-            dotBtn.disabled = true;
-        }else {
-            dotBtn.disabled = false;
-        } 
-    })
-})
+    if(firstNumber.includes('.') && !operatorSign || operatorSign && !secondNumber || operatorSign && secondNumber.includes('.')) {
+        dotBtn.disabled = true;
+    }else {
+        dotBtn.disabled = false;
+    } 
+}
 
-operatorBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-        if(firstNumber) {
-            displayInput(btn.value);
-            operatorSign = btn.value;
-            currentDisplay = firstNumber + operatorSign;
-            display.textContent = currentDisplay;
-        } 
-        
-    })
-})
+function displayOperators(operator) {
+    if(firstNumber) {
+        displayInput(operator);
+        operatorSign = operator;
+        currentDisplay = firstNumber + operatorSign;
+        display.textContent = currentDisplay;
+    } 
+}
 
-equalsBtn.addEventListener('click', () => {
+function displayResult() {
     const result = operator(Number(firstNumber), operatorSign, Number(secondNumber));
     let roundedResult;
     if(firstNumber && operatorSign && secondNumber) {
@@ -84,17 +79,17 @@ equalsBtn.addEventListener('click', () => {
         currentDisplay = firstNumber;
         dotBtn.disabled = false;
     }
-})
+}
 
-clearBtn.addEventListener('click', () => {
+function allClear() {
     display.textContent = '';
     firstNumber = null;
     secondNumber = null;
     operatorSign = null;
     currentDisplay = '';
-})
+}
 
-backspaceBtn.addEventListener('click', ()  => {
+function backspace() {
     if(currentDisplay.length > 0) {
         const newDisplay = currentDisplay.slice(0, -1);
         display.textContent = newDisplay;
@@ -105,63 +100,43 @@ backspaceBtn.addEventListener('click', ()  => {
             firstNumber = firstNumber.slice(0, -1);
         }
     }
-    
+}
+
+digitBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+        dislplayDigits(btn.value);
+    })
+})
+
+operatorBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+        displayOperators(btn.value);
+    })
+})
+
+equalsBtn.addEventListener('click', () => {
+    displayResult();
+})
+
+clearBtn.addEventListener('click', () => {
+    allClear();
+})
+
+backspaceBtn.addEventListener('click', ()  => {
+    backspace();
 })
 
 document.addEventListener('keydown', (event) => {
-    // let keyboardOperator = '+' || '-' || '*' || '/' || '%';
     if(!isNaN(event.key) || event.key === '.') {
-        console.log(typeof (event.key));
-        displayInput(event.key); 
-        if(!operatorSign) {
-            firstNumber = display.textContent;
-            currentDisplay = firstNumber;   
-        } else {
-            secondNumber = secondNumber ? secondNumber + event.key : event.key;
-            currentDisplay = firstNumber + operatorSign + secondNumber;
-        }   
-
-        if(firstNumber.includes('.') && !operatorSign || operatorSign && !secondNumber || operatorSign && secondNumber.includes('.')) {
-            dotBtn.disabled = true;
-        }else {
-            dotBtn.disabled = false;
-        } 
+        dislplayDigits(event.key);
     } else if((event.key === '+') || (event.key === '-') || (event.key === '*') || (event.key === '/') || (event.key === '%')) {
-        console.log(event.key + 'key pressed');
-        if(firstNumber) {
-            displayInput(event.key);
-            operatorSign = event.key;
-            currentDisplay = firstNumber + operatorSign;
-            display.textContent = currentDisplay;
-        } 
+        displayOperators(event.key);
     } else if (event.key === '=' || event.key === 'Enter') {
-        console.log(event.key + 'key pressed');
-        const result = operator(Number(firstNumber), operatorSign, Number(secondNumber));
-        let roundedResult;
-        if(firstNumber && operatorSign && secondNumber) {
-        if (result.toString().includes('.') && result.toString().length > 10) {
-            roundedResult = Number(result.toFixed(10));
-        } else {
-            roundedResult = result; 
-        }
-        display.textContent = roundedResult;
-        firstNumber = roundedResult.toString();
-        operatorSign = null;
-        secondNumber = null;
-        currentDisplay = firstNumber;
-        dotBtn.disabled = false;
-    }
+        displayResult();
     } else if (event.key === 'Backspace' || event.key === 'Delete') {
-        console.log(event.key + 'key pressed');
-        if(currentDisplay.length > 0) {
-            const newDisplay = currentDisplay.slice(0, -1);
-            display.textContent = newDisplay;
-            currentDisplay = newDisplay;
-            if(secondNumber && currentDisplay.includes(operatorSign)) {
-                secondNumber = secondNumber.slice(0, -1);
-            } else  {
-                firstNumber = firstNumber.slice(0, -1);
-            }
-        }
+        backspace();
+    } else if (event.key === 'Escape') {
+        allClear();
     }
 })
+
